@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable semi */
 import { GestureResponderEvent, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import React, { useState } from 'react';
@@ -7,13 +8,79 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 
 const PasswordSchema = yup.object().shape({
-  name:yup.string().required(),
+  // name:yup.string().required(),
   passwordLength: yup.number().min(4,'min 4 char').max(16,'max 16 char').required('password is required'),
-  age : yup.number().integer().positive().max(45).required('age is required '),
+  // age : yup.number().integer().positive().max(45).required('age is required '),
 });
-
+// const user = PasswordSchema.validate({
+//     password: 123456789,
+//     name : 'rk',
+//     age : 5,
+// });
+// console.log(user);
 
 export default function App() {
+  var [password, setPassword] = useState('');
+  var [passwordGenerated, setPasswordGenerated] = useState(false);
+  var [lowerCase, setLowerCase] = useState(false);
+  var [upperCase, setUpperCase] = useState(false);
+  var [numbers, setNumbers] = useState(false);
+  var [specialChar, setSpecialChar] = useState(false);
+  const windowWidth = useWindowDimensions().width
+  const windowHeight = useWindowDimensions().height
+
+  //Generate password Logic
+  const generatePasswordString = (passwordLengths : number) =>{
+    let characterlist  = ''
+    const upperCasechar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const lowerCasechar = 'abcdefghijklmnopqrstuvwxyz'
+    const numberschar = '0123456789'
+    const specialCharcter = '!@#$%^&*()_+'
+    if (upperCase){
+      characterlist += upperCasechar;
+    }
+    if (lowerCase){
+    characterlist += lowerCasechar;
+    }
+    if (numbers){
+    characterlist += numberschar;
+    }
+    if (specialChar){
+    characterlist += specialCharcter;
+    }
+    console.log(characterlist);
+    console.log(passwordLengths)
+    const passwordResult = createPasswordString(characterlist,passwordLengths)
+    console.log('password :' + passwordResult)
+    setPassword(passwordResult)
+    setPasswordGenerated(true)
+    console.log(passwordGenerated)
+    }
+
+
+    //Password String
+    const createPasswordString = (characters : string , length : number) =>{
+      let result = ''
+      let results = ''
+      for(let i = 0; i < length; i++) {
+        const characterIndex = Math.round(Math.random() * characters.length)
+        console.log(characterIndex)
+        results = characters.charAt(characterIndex)
+        result += results
+      }
+
+      return result
+      }
+
+      //Resest the states on call
+      const resetPasswordString = () => {
+        setPasswordGenerated(false);
+        setPassword('');
+        setLowerCase(false);
+        setUpperCase(false);
+        setNumbers(false);
+        setSpecialChar(false);
+      };
   return (
     <SafeAreaView style={{flex : 1,backgroundColor : 'aqua'}}>
     <View style={styles.container}>
@@ -42,24 +109,21 @@ export default function App() {
             marginTop :-20,
             marginBottom:18,
         }}>Password Generator</Text>
-    
+
     <Formik
        initialValues={{ passwordLength: '' }}
-       validationSchema={PasswordSchema} 
+       validationSchema={PasswordSchema}
         onSubmit={ values => {
           console.log(values)
-          generatePasswordString(Number(values.passwordLength)) 
+          generatePasswordString(Number(values.passwordLength))
         }}
      >
        {({
          values,
          errors,
          touched,
-         isValid,
          handleChange,
-         handleBlur,
          handleSubmit,
-         handleReset,
        }) => (
         <>
 
@@ -95,7 +159,7 @@ export default function App() {
               setLowerCase(lowerCase)
               console.log(lowerCase)
             }}
-            fillColor="#FED850"
+            fillColor="aqua"
             />
         </View>
         </View>
@@ -110,7 +174,7 @@ export default function App() {
               setUpperCase(upperCase)
               console.log(upperCase)
             }}
-            fillColor="#FED850"
+            fillColor="black"
             />
         </View>
         </View>
@@ -125,7 +189,7 @@ export default function App() {
               setNumbers(numbers)
               console.log(numbers)
             }}
-            fillColor="#FED850"
+            fillColor="brown"
             />
         </View>
         </View>
@@ -140,7 +204,7 @@ export default function App() {
               setSpecialChar(specialChar)
               console.log(specialChar)
             }}
-            fillColor="#FED850"
+            fillColor="#c34fe3"
             />
         </View>
         </View>
@@ -161,7 +225,7 @@ export default function App() {
         <Text selectable={true} style={[styles.InlineText,{fontSize:20,fontWeight: '700',color : 'black'}]}>Password : {password}</Text>
         <Text style={styles.InlineText}>Select To Copy</Text>
       </View>
-    ) : 
+    ) :
      null
     }
       </View>
