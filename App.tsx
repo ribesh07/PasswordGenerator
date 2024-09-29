@@ -7,16 +7,11 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 
 const PasswordSchema = yup.object().shape({
-  // name:yup.string().required(),
+  name:yup.string().required(),
   passwordLength: yup.number().min(4,'min 4 char').max(16,'max 16 char').required('password is required'),
-  // age : yup.number().integer().positive().max(45).required('age is required '),
+  age : yup.number().integer().positive().max(45).required('age is required '),
 });
-// const user = PasswordSchema.validate({
-//     password: 123456789,
-//     name : 'rk',
-//     age : 5,
-// });
-// console.log(user);
+
 
 export default function App() {
   return (
